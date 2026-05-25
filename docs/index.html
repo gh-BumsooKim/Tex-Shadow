@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Tex-Shadow: Synthesizing Textured 3D Shadow Art via 3D-Aware Diffusion Prior">
+  <meta property="og:title" content="Tex-Shadow"/>
+  <meta property="og:description" content="Tex-Shadow: Synthesizing Textured 3D Shadow Art via 3D-Aware Diffusion Prior"/>
+  <!-- <meta property="og:image" content="static/images/fig_teaser.png"/> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Tex-Shadow</title>
+  <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.ico"> -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/app.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+
+  <!-- 3D Model Viewer -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+</head>
+<body>
+
+<!-- ============================================================
+     Navbar
+     ============================================================ -->
+<nav class="navbar is-black" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://github.com/gh-BumsooKim">
+        <span class="icon"><i class="fas fa-home"></i></span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">More Research about Bumsoo Kim</a>
+        <div class="navbar-dropdown" style="left:50%; margin-left:-350px; min-width:700px">
+
+          <span class="navbar-item" style="font-weight:bold; background:#b87d1a;">Non-photorealistic (NPR) Domain</span>
+          <div class="container is-max-desktop"><div class="columns is-centered">
+            <div class="column" style="min-width:300px;">
+              <a class="navbar-item" href="https://gh-bumsookim.github.io/Minecraft-ify/">&emsp;Minecraft-ify</a>
+              <a class="navbar-item" href="https://gh-bumsookim.github.io/ToonAging/">&emsp;ToonAging</a>
+              <a class="navbar-item" href="https://gh-bumsookim.github.io/Cartoon-Hallucinations-Detection/">&emsp;Cartoon Hallucination Detection</a>
+              <span class="navbar-item" style="font-weight:bold;">&emsp;Tex-Shadow (Here)</span>
+            </div>
+            <div class="column" style="min-width:200px;">
+              <span class="navbar-item">NeurIPS:W'23, Oral</span>
+              <span class="navbar-item">CVPR:W'24</span>
+              <span class="navbar-item">WACV'25</span>
+              <span class="navbar-item">SIGGRAPH'26 Poster</span>
+            </div>
+            <div class="column" style="min-width:150px;">
+              <span class="navbar-item"><em>1st authored</em></span>
+              <span class="navbar-item"><em>1st authored</em></span>
+              <span class="navbar-item"><em>Co-1st authored</em></span>
+              <span class="navbar-item"><em>1st authored</em></span>
+            </div>
+          </div></div>
+
+          <span class="navbar-item" style="font-weight:bold; background:#1a3a5c;">Photorealistic (PR) Domain</span>
+          <div class="container is-max-desktop"><div class="columns is-centered">
+            <div class="column" style="min-width:300px;">
+              <a class="navbar-item" href="https://video-reaging.github.io/">&emsp;Video Face Re-Aging</a>
+              <a class="navbar-item" href="https://arxiv.org/abs/2502.03966">&emsp;MultiFloodSynth</a>
+              <a class="navbar-item" href="https://gh-bumsookim.github.io/VideoTimeTravel/">&emsp;VideoTimeTravel</a>
+              <a class="navbar-item" href="https://gh-bumsookim.github.io/SoundsThatShape/">&emsp;SoundsThatShape</a>
+            </div>
+            <div class="column" style="min-width:200px;">
+              <span class="navbar-item">preprinted</span>
+              <span class="navbar-item">AAAI:W'25, Oral</span>
+              <span class="navbar-item">Visual Computer'26</span>
+              <span class="navbar-item">ICASSP'26</span>
+            </div>
+            <div class="column" style="min-width:150px;">
+              <span class="navbar-item"><em>Co-authored</em></span>
+              <span class="navbar-item"><em>Co-1st authored</em></span>
+              <span class="navbar-item"><em>1st authored</em></span>
+              <span class="navbar-item"><em>1st authored</em></span>
+            </div>
+          </div></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     Hero  (dark ink — not a content section, no ts-section)
+     ============================================================ -->
+<section class="hero theme-ink">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="has-text-centered">
+
+        <h1 class="title is-2 publication-title">
+          Tex-Shadow: Synthesizing Textured 3D Shadow Art<br>via 3D-Aware Diffusion Prior
+        </h1>
+
+        <div class="is-size-5 publication-authors" style="margin-top:1rem;">
+          <span class="author-block">
+            <a href="https://bumsookim00.com/" target="_blank">Bumsoo Kim<sup>1,†</sup></a>,&nbsp;
+            <a href="https://scholar.google.com/citations?user=k1SL428AAAAJ" target="_blank">Sanghyun Seo<sup>1,*</sup></a>
+          </span>
+        </div>
+
+        <div class="is-size-6 publication-authors" style="margin-top:0.5rem; color:#ccccdd;">
+          <sup>1</sup>Chung-Ang University, Republic of Korea<br>
+          <small style="color:#9999bb;">
+            <sup>†</sup>Derived from his Master's thesis at CAU; now with Smilegate &nbsp;·&nbsp;
+            <sup>*</sup>Corresponding Author
+          </small>
+        </div>
+
+        <div style="margin-top:1rem;">
+          <span class="publication-venue">SIGGRAPH 2026 Posters</span>
+        </div>
+
+        <div class="publication-links" style="margin-top:1rem;">
+          <span class="link-block">
+            <a href="#" target="_blank" class="external-link button is-normal is-rounded is-outlined ts-btn">
+              <span class="icon"><i class="fas fa-file-pdf"></i></span>
+              <span>Paper (ACM, Soon)</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a href="https://github.com/gh-BumsooKim/Tex-Shadow" target="_blank" class="external-link button is-normal is-rounded is-outlined ts-btn">
+              <span class="icon"><i class="fab fa-github"></i></span>
+              <span>Code (Soon)</span>
+            </a>
+          </span>
+        </div>
+
+        <p style="color:#9999bb; font-size:0.85rem; margin-top:0.7rem;">
+          July 19–23, 2026 &nbsp;·&nbsp; ACM SIGGRAPH 2026 Posters &nbsp;·&nbsp; Los Angeles, CA, USA
+        </p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TL;DR  (cream)
+     ============================================================ -->
+<section class="hero teaser theme-cream">
+  <div class="container is-max-desktop ts-section">
+    <div class="has-text-centered">
+
+      <div class="ts-title-block">
+        <h2 class="title is-3 accent-line" id="tldr">
+          <cite>"Where Shadows Become Sculptures"</cite>
+        </h2>
+      </div>
+
+      <p class="ts-body">
+        <b>tl;dr</b>&nbsp; An optimization-based framework that leverages 3D-aware diffusion
+        priors to automate the generation of high-quality <em>textured</em> 3D shadow art from
+        sparse multi-view inputs — the first method to support both colorful anamorphic
+        exhibitions and light-projected shadow art.
+      </p>
+
+      <div style="margin-top:1.4rem;">
+        <a href="https://neweng.cau.ac.kr/index.do" target="_blank">
+          <img src="static/images/cau_logo.png" style="width:18%; min-width:110px;">
+        </a>
+      </div>
+
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============================================================
+     Teaser Image  (paper)
+     ============================================================ -->
+<section class="hero theme-paper">
+  <div class="container is-max-desktop ts-section">
+    <div class="has-text-centered">
+
+      <div class="ts-title-block">
+        <h2 class="title is-3 accent-line" id="teaser">Teaser</h2>
+      </div>
+
+      <div class="image-container ts-img-wide">
+        <img src="static/images/fig_abs.png"
+             alt="Tex-Shadow: sparse inputs → textured 3D output → applications (Voxel, Brick, Game, Gallery)">
+      </div>
+
+      <p class="ts-body">
+        <b>Tex-Shadow</b> integrates few-shot 3D reconstruction with inverse texture optimization
+        to generate high-quality textured 3D objects for front-facing colorful anamorphic illusion
+        and light-projected shadow art exhibitions. Generated assets are validated through physical
+        brick fabrication and real-time game engine integration.
+      </p>
+
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============================================================
+     Poster  (cream)
+     ============================================================ -->
+<section class="hero theme-cream">
+  <div class="container is-max-desktop ts-section">
+    <div class="has-text-centered">
+
+      <div class="ts-title-block">
+        <h2 class="title is-3 accent-line" id="poster">Poster</h2>
+      </div>
+
+      <div class="image-container ts-img-narrow">
+        <img src="static/images/siggraph_26_poster.png" alt="SIGGRAPH 2026 Poster">
+      </div>
+
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============================================================
+     Method Overview  (paper)
+     ============================================================ -->
+<section class="hero theme-paper">
+  <div class="container is-max-desktop ts-section">
+    <div class="has-text-centered">
+
+      <div class="ts-title-block">
+        <h2 class="title is-3 accent-line" id="method">Method Overview</h2>
+      </div>
+
+      <div class="ts-body content">
+        <p>
+          Tex-Shadow is a hybrid optimization framework that generates textured 3D meshes from
+          <em>N</em>-view images with two main stages:
+        </p>
+        <ul>
+          <li>
+            <b>Customization for Semantic-free Inputs</b> — A pre-trained 3D diffusion model is
+            fine-tuned via LoRA on input image–pose pairs, enabling it to handle heterogeneous
+            (semantic-free) inputs where each view depicts a categorically different subject.
+          </li>
+          <li>
+            <b>Explicit 3D Reconstruction</b> — The customized prior guides Instant-NGP via a
+            hybrid Multi-SDS+ loss for 3D-consistent geometry. A subsequent UV-space inverse
+            texture optimization step, run through a differentiable rendering pipeline, recovers
+            fine-grained color details.
+          </li>
+        </ul>
+        <p>
+          The resulting mesh is exported to diverse representations: triangular mesh, voxel grid,
+          density fields, and 3D point cloud, enabling broad downstream use.
+        </p>
+      </div>
+
+      <div class="image-container ts-img-wide">
+        <img src="static/images/fig_pipeline.png" alt="Tex-Shadow pipeline overview">
+      </div>
+
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============================================================
+     Comparison  (cream)
+     ============================================================ -->
+<section class="hero theme-cream">
+  <div class="container is-max-desktop ts-section">
+    <div class="has-text-centered">
+
+      <div class="ts-title-block">
+        <h2 class="title is-3 accent-line" id="comparison">Impact of 3D-Aware Diffusion Priors</h2>
+      </div>
+
+      <div class="image-container ts-img-wide">
+        <img src="static/images/fig_comparison.png"
+             alt="Comparison: Video prior / Dense point + few-shot 3DGS / Feed-forward sparse 3D / Ours">
+      </div>
+
+      <p class="ts-body">
+        Our customization scheme produces consistent topology and seamless visuals from
+        semantic-free inputs. Compared to video priors (overall low quality),
+        dense point initialization (highly unstructured, floating faces), and
+        feed-forward sparse 3D models (exacerbated structure, low fidelity),
+        our method achieves view-consistent and visually coherent reconstructions.
+      </p>
+
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============================================================
+     Results  (paper)
+     ============================================================ -->
+<section class="hero theme-paper">
+  <div class="container is-max-desktop ts-section">
+    <div class="has-text-centered">
+
+      <div class="ts-title-block">
+        <h2 class="title is-3 accent-line" id="results">Results</h2>
+      </div>
+
+      <div class="image-container ts-img-wide">
+        <img src="static/images/fig_results.png"
+             alt="Tex-Shadow results: colorful anamorphic art and light-based shadow art from 2/3-view inputs">
+      </div>
+
+      <p class="ts-body">
+        Tex-Shadow synthesizes 3D sculptures that simultaneously satisfy colorful anamorphic
+        appearances from the front and precise shadow silhouettes when projected from the rear.
+        Results shown for both 2-view and 3-view inputs across anamorphic and shadow art modes.
+      </p>
+
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============================================================
+     Interactive 3D Viewer  (ink — dark)
+     ============================================================ -->
+<section class="hero theme-ink">
+  <div class="container is-max-desktop ts-section">
+    <div class="has-text-centered">
+
+      <div class="ts-title-block">
+        <h2 class="title is-3 accent-line" id="viewer">Interactive 3D Model Viewer</h2>
+      </div>
+
+      <p class="ts-body">
+        Drag to rotate &nbsp;·&nbsp; Scroll to zoom &nbsp;·&nbsp; Auto-rotate enabled<br>
+        <em style="font-size:0.82rem; color:#55557a;">
+          ※ Add GLB files to
+          <code style="background:#0f0f1a; padding:2px 6px; border-radius:3px; color:#e8a838;">static/3d_asset/</code>
+          and update the
+          <code style="background:#0f0f1a; padding:2px 6px; border-radius:3px; color:#e8a838;">src</code>
+          attribute of each viewer.
+        </em>
+      </p>
+
+      <!-- Row 1: Colorful Anamorphic Art -->
+      <h3 class="title is-5 viewer-subheading">
+        Colorful Anamorphic Art
+      </h3>
+      <div class="columns">
+        <div class="column viewer-card">
+          <model-viewer src="static/3d_asset/texshadow_anamorphic_01.glb"
+            camera-controls touch-action="pan-y" auto-rotate
+            shadow-intensity="1.2" environment-image="neutral"
+            alt="Tex-Shadow anamorphic output 01"></model-viewer>
+          <p class="viewer-label">Example 01 — 2-View Input</p>
+          <p class="viewer-sublabel">Front: colorful texture &nbsp;|&nbsp; Rear: projected shadow</p>
+        </div>
+        <div class="column viewer-card">
+          <model-viewer src="static/3d_asset/texshadow_anamorphic_02.glb"
+            camera-controls touch-action="pan-y" auto-rotate
+            shadow-intensity="1.2" environment-image="neutral"
+            alt="Tex-Shadow anamorphic output 02"></model-viewer>
+          <p class="viewer-label">Example 02 — 2-View Input</p>
+          <p class="viewer-sublabel">Front: colorful texture &nbsp;|&nbsp; Rear: projected shadow</p>
+        </div>
+        <div class="column viewer-card">
+          <model-viewer src="static/3d_asset/texshadow_anamorphic_03.glb"
+            camera-controls touch-action="pan-y" auto-rotate
+            shadow-intensity="1.2" environment-image="neutral"
+            alt="Tex-Shadow anamorphic output 03"></model-viewer>
+          <p class="viewer-label">Example 03 — 3-View Input</p>
+          <p class="viewer-sublabel">Front: colorful texture &nbsp;|&nbsp; Rear: projected shadow</p>
+        </div>
+      </div>
+
+      <div class="spacer" style="margin-top:1.6rem; margin-bottom:1.6rem;"></div>
+
+      <!-- Row 2: Light-Projected Shadow Art -->
+      <h3 class="title is-5 viewer-subheading">
+        Light-Projected Shadow Art
+      </h3>
+      <div class="columns">
+        <div class="column viewer-card">
+          <model-viewer src="static/3d_asset/texshadow_shadow_01.glb"
+            camera-controls touch-action="pan-y" auto-rotate
+            shadow-intensity="2.0" environment-image="neutral"
+            alt="Tex-Shadow shadow art output 01"></model-viewer>
+          <p class="viewer-label">Shadow Art — 2-View Input</p>
+          <p class="viewer-sublabel">Silhouette-preserving 3D sculpture</p>
+        </div>
+        <div class="column viewer-card">
+          <model-viewer src="static/3d_asset/texshadow_shadow_02.glb"
+            camera-controls touch-action="pan-y" auto-rotate
+            shadow-intensity="2.0" environment-image="neutral"
+            alt="Tex-Shadow shadow art output 02"></model-viewer>
+          <p class="viewer-label">Shadow Art — 3-View Input</p>
+          <p class="viewer-sublabel">Silhouette-preserving 3D sculpture</p>
+        </div>
+        <div class="column viewer-card">
+          <model-viewer src="static/3d_asset/texshadow_voxel_01.glb"
+            camera-controls touch-action="pan-y" auto-rotate
+            shadow-intensity="1.5" environment-image="neutral"
+            alt="Tex-Shadow voxelized output"></model-viewer>
+          <p class="viewer-label">Voxelized Output</p>
+          <p class="viewer-sublabel">Downstream: physical brick fabrication</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============================================================
+     BibTeX  (ink — dark)
+     ============================================================ -->
+<section class="hero theme-ink">
+  <div class="container is-max-desktop ts-section">
+    <div class="has-text-centered">
+
+      <div class="ts-title-block">
+        <h2 class="title is-3 accent-line" id="bibtex">BibTeX</h2>
+      </div>
+
+      <div class="ts-body bibtex-block">
+        <pre><code>@inproceedings{kim2026texshadow,
+  title     = {Tex-Shadow: Synthesizing Textured 3D Shadow Art via 3D-Aware Diffusion Prior},
+  author    = {Kim, Bumsoo and Seo, Sanghyun},
+  booktitle = {SIGGRAPH '26 Posters: ACM SIGGRAPH 2026 Posters},
+  year      = {2026},
+  address   = {Los Angeles, CA, USA},
+  publisher = {ACM}
+}</code></pre>
+      </div>
+
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============================================================
+     References  (cream)
+     ============================================================ -->
+<section class="hero theme-cream">
+  <div class="container is-max-desktop ts-section">
+    <div class="has-text-centered">
+
+      <div class="ts-title-block">
+        <h2 class="title is-3 accent-line" id="references">Reference</h2>
+      </div>
+
+      <div class="ts-body content">
+        <ol>
+          <li>(LRM) Hong et al., LRM: Large Reconstruction Model for Single Image to 3D. <em>ICLR</em></li>
+          <li>(LoRA) Hu et al., LoRA: Low-Rank Adaptation of Large Language Models. <em>ICLR 2022</em></li>
+          <li>(Differentiable Rendering) Laine et al., Modular Primitives for High-Performance Differentiable Rendering. <em>ACM TOG 2020</em></li>
+          <li>(Zero-1-to-3) Liu et al., Zero-1-to-3: Zero-shot One Image to 3D Object. <em>ICCV 2023</em></li>
+          <li>(Shadow Art) Mitra &amp; Pauly, Shadow Art. <em>ACM TOG 2009</em></li>
+          <li>(Instant-NGP) Müller et al., Instant Neural Graphics Primitives with a Multiresolution Hash Encoding. <em>ACM TOG 2022</em></li>
+          <li>(DreamFusion / SDS) Poole et al., DreamFusion: Text-to-3D using 2D Diffusion. <em>arXiv 2022</em> — <a href="https://dreamfusion3d.github.io/" target="_blank">dreamfusion3d.github.io</a></li>
+          <li>(Multi-SDS / Wire Art) Qu et al., Wired Perspectives: Multi-view Wire Art Embraces Generative AI. <em>CVPR 2024</em></li>
+          <li>(Shadow Art Revisited) Sadekar et al., Shadow Art Revisited: A Differentiable Rendering Based Approach. <em>WACV 2022</em></li>
+          <li>(Zero123++) Shi et al., Zero123++: A Single Image to Consistent Multi-view Diffusion Base Model. <em>arXiv 2023</em></li>
+          <li>(MVDream) Shi et al., MVDream: Multi-view Diffusion for 3D Generation. <em>ICLR 2024</em> — <a href="https://mv-dream.github.io/" target="_blank">mv-dream.github.io</a></li>
+          <li>(DreamGaussian) Tang et al., DreamGaussian: Generative Gaussian Splatting for Efficient 3D Content Creation. <em>arXiv 2023</em> — <a href="https://dreamgaussian.github.io/" target="_blank">dreamgaussian.github.io</a></li>
+          <li>(HIFA) Zhu et al., HIFA: High-fidelity Text-to-3D Generation with Advanced Diffusion Guidance. <em>ICLR 2024</em></li>
+          <li>(FSGS) Zhu et al., FSGS: Real-time Few-shot View Synthesis using Gaussian Splatting. <em>ECCV 2024</em></li>
+        </ol>
+      </div>
+
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============================================================
+     Footer
+     ============================================================ -->
+<footer class="footer" style="background-color:#1a1a2e;">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content has-text-centered">
+          <p style="color:#9999bb; font-size:0.85rem;">
+            This page was built using the
+            <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" style="color:#e8a838;">Academic Project Page Template</a>
+            adopted from the
+            <a href="https://nerfies.github.io" target="_blank" style="color:#e8a838;">Nerfies</a>
+            project page.
+            Licensed under
+            <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" style="color:#e8a838;">CC BY-SA 4.0</a>.
+          </p>
+          <p style="margin-top:0.8rem;">
+            <a href="https://mapmyvisitors.com/web/1c4pz" title="Visit tracker">
+              <img src="https://mapmyvisitors.com/map.png?cl=ffffff&w=300&t=tt&d=f92cSsPF66ZD66ZArvDFbhP1wjdBHj5hpC1A0s8tEZ4&co=1a1a2e&ct=ffffff">
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
