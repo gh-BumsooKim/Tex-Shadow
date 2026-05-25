@@ -26,6 +26,19 @@ Tex-Shadow is a hybrid optimization framework with two main stages:
 
 The resulting mesh is exported to diverse representations: triangular mesh, voxel grid, density fields, and 3D point cloud.
 
+## Code Release Roadmap
+
+- [ ] Stage 1 — LoRA fine-tuning for semantic-free 3D prior customization
+- [ ] Stage 1 — Instant-NGP reconstruction with Multi-SDS+ loss
+- [x] Stage 2 — UV-space inverse texture refinement (`code/refinement.py`)
+
+## Acknowledgements
+
+This project builds upon the following excellent open-source works:
+
+- [**DreamGaussian**](https://github.com/dreamgaussian/dreamgaussian) — mesh extraction and texture refinement pipeline
+- [**iFusion**](https://github.com/jiawei-ren/iFusion) — Zero123-based diffusion guidance for sparse-view 3D reconstruction
+
 ## Citation
 
 ```bibtex
