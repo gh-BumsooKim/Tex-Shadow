@@ -16,6 +16,32 @@
 
 Tex-Shadow is an optimization-based framework that leverages 3D-aware diffusion priors to automate the generation of high-quality **textured** 3D shadow art from sparse multi-view inputs — the first method to support both **colorful anamorphic exhibitions** and **light-projected shadow art**.
 
+## Pipeline
+
+```mermaid
+flowchart LR
+    A["📷 N-view Images\nsemantic-free"] --> B
+
+    subgraph S1["Stage 1 — 3D Reconstruction"]
+        B["LoRA Customization\nZero123++ · MVDream"]
+        C["Multi-SDS+ Loss\n+ Instant-NGP"]
+        D["Marching Cubes\nmesh extraction"]
+        B --> C --> D
+    end
+
+    subgraph S2["Stage 2 — Texture Refinement"]
+        E["UV Unwrapping\nxatlas"]
+        F["Inverse Texture Opt.\nnvdiffrast · Zero123"]
+        E --> F
+    end
+
+    D --> E
+
+    F --> G1["🎨 Anamorphic Art"]
+    F --> G2["💡 Shadow Art"]
+    F --> G3["🧱 Voxel · Brick · Game"]
+```
+
 ## Method
 
 Tex-Shadow is a hybrid optimization framework with two main stages:
