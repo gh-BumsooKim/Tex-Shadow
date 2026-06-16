@@ -5,18 +5,28 @@
 /* --- Side nav (barcode) ------------------------------------ */
 #side-nav {
   position: fixed;
-  left: 16px;
+  right: 18px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 200;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  align-items: flex-end;
+  gap: 14px;
+  width: 232px;
+  padding: 20px 18px;
+  background: rgba(26, 44, 50, 0.78);
+  -webkit-backdrop-filter: blur(9px);
+  backdrop-filter: blur(9px);
+  border: 1px solid rgba(150, 170, 166, 0.18);
+  border-radius: 14px;
+  box-shadow: var(--shadow-float);
 }
 
 .side-nav-item {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   height: 26px;            /* click-area height */
   width: 58px;             /* click-area width (easy to click even for short bars) */
   position: relative;
@@ -30,7 +40,7 @@
   display: block;
   height: 8px;
   border-radius: 2px;
-  background: #55686e;
+  background: #aeb9b5;
   transition: background 0.2s ease, height 0.2s ease, width 0.2s ease;
 }
 
@@ -47,7 +57,7 @@
 
 .side-nav-item:hover::before,
 .side-nav-item.is-active::before {
-  background: #1D90A3;
+  background: #5bc4d6;
   height: 11px;
   width: 58px;
 }
@@ -56,37 +66,22 @@
 .side-nav-item::after {
   content: attr(data-label);
   position: absolute;
-  left: calc(100% + 14px);
+  right: calc(100% + 14px);
   top: 50%;
   transform: translateY(-50%);
-  color: #55686e;
+  color: #b8c4c0;
   font-size: 0.86rem;
   font-weight: 600;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Ubuntu', sans-serif;
   letter-spacing: 0.02em;
   white-space: nowrap;
+  text-align: right;
   transition: color 0.2s ease;
 }
 
 .side-nav-item:hover::after,
 .side-nav-item.is-active::after {
-  color: #1D90A3;
-}
-
-/* over dark sections — warm cream bars/labels (clear contrast) */
-#side-nav.on-dark .side-nav-item::before {
-  background: #D2C5B2;
-}
-#side-nav.on-dark .side-nav-item::after {
-  color: #D2C5B2;
-}
-#side-nav.on-dark .side-nav-item:hover::before,
-#side-nav.on-dark .side-nav-item.is-active::before {
-  background: #ffffff;
-}
-#side-nav.on-dark .side-nav-item:hover::after,
-#side-nav.on-dark .side-nav-item.is-active::after {
-  color: #ffffff;
+  color: #5bc4d6;
 }
 
 @media (max-width: 1100px) { #side-nav { display: none; } }
@@ -94,18 +89,45 @@
 /* --- Base -------------------------------------------------- */
 body {
   background-color: #fafaf8;
-  font-family: 'DM Sans', 'Noto Sans', sans-serif;
+  font-family: "Noto Sans", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-a             { color: #c47a19; text-decoration: none; }
+/* form elements don't inherit font-family by default → make them follow body */
+button, input, select, textarea, .button {
+  font-family: inherit;
+}
+
+/* --- Scroll reveal (gated on .js so content shows without JS) --- */
+.js .ts-section .has-text-centered {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.js .ts-section .has-text-centered.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .ts-section .has-text-centered {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+a             { color: #1D90A3; text-decoration: none; }
 a:focus,
-a:hover       { color: #00e1ff; text-decoration: none; }
+a:hover       { color: #5bc4d6; text-decoration: none; }
 
 /* --- Structural helpers ------------------------------------ */
 .image-container {
   position: relative;
   width: 100%;
   display: inline-block;
+}
+.image-container img {
+  display: block;   /* remove inline baseline gap (the stray rectangle under images) */
+  width: 100%;
 }
 
 .link-block a {
@@ -114,10 +136,8 @@ a:hover       { color: #00e1ff; text-decoration: none; }
 }
 
 .spacer {
-  background-color: #5f5f5f;
-  width: 50%;
-  height: 1px;
-  margin: 20px auto;
+  height: 0;
+  margin: 1rem auto;
 }
 
 /* --- Navbar dropdown --------------------------------------- */
@@ -148,9 +168,9 @@ a:hover       { color: #00e1ff; text-decoration: none; }
 .mega-inner {
   width: 56vw;
   margin: 0 auto;
-  /* border-radius: 8px; */
+  border-radius: var(--radius);
   border: 1px solid #c8c0b0;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.14);
+  box-shadow: var(--shadow-float);
   background: #EDE8DF;
   overflow: hidden;
   pointer-events: auto;
@@ -206,9 +226,10 @@ a:hover       { color: #00e1ff; text-decoration: none; }
 .mega-topic {
   background: #2A4249;
   color: #E6E2D5;
+  font-family: 'Ubuntu', sans-serif;
   font-weight: 700;
-  padding: 7px 4px;
-  font-size: 0.82rem;
+  padding: 10px 4px;
+  font-size: 1.02rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: center;
@@ -235,10 +256,10 @@ a.mega-paper::after {
   width: 0;
   height: 3px;
   background: #2A4249;
-  transition: width 0.28s ease;
+  transition: width var(--ease);
 }
 a.mega-paper:hover::after { width: 100%; }
-a.mega-paper:hover { background: #D2C5B2 !important; }
+a.mega-paper:hover { background: var(--ts-sand) !important; }
 
 .mega-current { background: #d8d0c4 !important; }
 
@@ -291,10 +312,24 @@ a.mega-paper:hover { background: #D2C5B2 !important; }
   --ts-paper:    #E6E2D5;   /* between secondary & primary */
   --ts-charcoal: #2A4249;   /* --fc */
   --ts-muted:    #96aaa6;   /* muted teal-grey */
+  --ts-sand:     #D2C5B2;   /* SIGGRAPH primary — warm beige text on dark */
+
+  /* consistency tokens */
+  --radius:        8px;
+  --shadow-card:   0 2px 12px rgba(0, 0, 0, 0.10);
+  --shadow-hover:  0 10px 28px rgba(0, 0, 0, 0.16);
+  --shadow-float:  0 12px 40px rgba(0, 0, 0, 0.24), 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-img:    0 8px 28px rgba(0, 0, 0, 0.14);
+  --ease:          0.2s ease;
 }
 
 /* --- Section backgrounds ------------------------------------ */
-.theme-ink   { background-color: var(--ts-ink)   !important; }
+.theme-ink   {
+  background-color: var(--ts-ink) !important;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -8%, rgba(91, 196, 214, 0.35), transparent 72%),
+    radial-gradient(ellipse 62% 50% at 50% 108%, rgba(29, 144, 163, 0.23), transparent 72%);
+}
 .theme-cream { background-color: var(--ts-cream) !important; }
 .theme-paper { background-color: var(--ts-paper) !important; }
 
@@ -336,7 +371,6 @@ a.mega-paper:hover { background: #D2C5B2 !important; }
   }
   4% {
     text-shadow:
-      1px  -8px   0px  rgba(210, 197, 178, 0.72),
       2px  -18px  4px  rgba(210, 197, 178, 0.52),
       4px  -32px  12px rgba(210, 197, 178, 0.33),
       7px  -52px  26px rgba(210, 197, 178, 0.18),
@@ -346,7 +380,6 @@ a.mega-paper:hover { background: #D2C5B2 !important; }
   }
   93% {
     text-shadow:
-      1px  -8px   0px  rgba(210, 197, 178, 0.72),
       2px  -18px  4px  rgba(210, 197, 178, 0.52),
       4px  -32px  12px rgba(210, 197, 178, 0.33),
       7px  -52px  26px rgba(210, 197, 178, 0.18),
@@ -362,11 +395,57 @@ a.mega-paper:hover { background: #D2C5B2 !important; }
 .shadow-animate {
   display: inline-block;
   animation: shadow-cast 2.2s linear infinite;
+  position: relative;
+  z-index: 0;            /* establish stacking context so the glow sits behind the text, not behind the section bg */
+}
+
+/* flashlight cone below "Shadow" — turns on in sync with the cast shadow */
+.shadow-animate::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.55em;
+  transform: translateX(-50%);
+  width: 175%;
+  height: 1.6em;
+  background: linear-gradient(to top,
+              rgba(255, 236, 195, 0.6),
+              rgba(255, 236, 195, 0.14) 48%,
+              transparent 82%);
+  /* triangular beam: narrow point at the bottom (light source), widening upward */
+  clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+  filter: blur(5px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  animation: flashlight 2.2s linear infinite;
+}
+
+@keyframes flashlight {
+  0%   { opacity: 0; animation-timing-function: cubic-bezier(0.0, 0.0, 0.05, 1); }
+  4%   { opacity: 1; animation-timing-function: linear; }
+  93%  { opacity: 1; animation-timing-function: cubic-bezier(0.95, 0.0, 1.0, 1.0); }
+  100% { opacity: 0; }
 }
 
 /* --- Title font & colors ----------------------------------- */
 .title, .publication-title {
-  font-family: 'DM Sans', sans-serif !important;
+  font-family: 'Ubuntu', sans-serif !important;
+}
+
+.publication-title {
+  font-size: 3.4em !important;
+  line-height: 1.18;
+}
+
+/* authors/affiliation used the unavailable 'Google Sans' (index.css) → follow body */
+.publication-authors {
+  font-family: inherit !important;
+}
+
+/* widen hero container so the long title fits on two lines */
+.hero-body .container {
+  max-width: 1340px !important;
 }
 
 .theme-ink .title {
@@ -395,7 +474,29 @@ a.mega-paper:hover { background: #D2C5B2 !important; }
   background-color: transparent !important;
   border-color: var(--ts-amber) !important;
   color: var(--ts-amber) !important;
+  font-family: 'Ubuntu', 'Noto Sans', sans-serif !important;
+  font-weight: 700 !important;
+  min-height: 2.7rem;
+  padding-left: 1.35rem !important;
+  padding-right: 1.35rem !important;
+  border-width: 1.5px !important;
+  border-radius: 999px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  transition: background-color var(--ease), color var(--ease), border-color var(--ease), box-shadow var(--ease) !important;
 }
+.ts-btn:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+}
+
+/* hero button row — even spacing like MeshFlow */
+.publication-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+.publication-links .link-block { margin: 0; }
+.publication-links .link-block a { margin: 0; }
 .ts-btn:hover,
 .ts-btn:focus {
   background-color: var(--ts-amber) !important;
@@ -403,19 +504,85 @@ a.mega-paper:hover { background: #D2C5B2 !important; }
 }
 .ts-btn .icon { color: inherit !important; }
 
-/* --- Publication venue badge -------------------------------- */
-.publication-venue {
-  display: inline-block;
-  background: rgba(91, 141, 184, 0.18);
-  color: #a8d0ea !important;
-  border: 1px solid rgba(91, 141, 184, 0.45);
-  padding: 5px 18px;
-  border-radius: 6px;
+/* "Soon" buttons — visible but not clickable */
+.ts-btn.is-soon {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* --- Hero metric badges ------------------------------------ */
+.hero-metrics {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2.6rem;
+  margin-top: 1.6rem;
+}
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.metric:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -1.3rem;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: rgba(150, 170, 166, 0.35);
+}
+.metric-val {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 1.45rem;
   font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.06em;
+  color: #ffffff;
+  line-height: 1.1;
+}
+.metric-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-top: 10px;
+  color: #96aaa6;
+  margin-top: 4px;
+}
+
+/* --- Abstract feature cards -------------------------------- */
+.feature-cards {
+  margin-top: 2rem !important;
+}
+.feature-card {
+  height: 100%;
+  background: #faf8f3;
+  border: 1px solid #e0d9cb;
+  border-radius: var(--radius);
+  padding: 1.6rem 1.3rem;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--ease), box-shadow var(--ease);
+}
+.feature-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+.feature-icon {
+  font-size: 1.7rem;
+  color: #1D90A3;
+  margin-bottom: 0.7rem;
+}
+.feature-card h3 {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2A4249;
+  margin-bottom: 0.5rem;
+}
+.feature-card p {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: #55686e !important;
 }
 
 /* --- Section heading accent underline ----------------------- */
@@ -436,19 +603,13 @@ a.mega-paper:hover { background: #D2C5B2 !important; }
   background: #1D90A3;
 }
 
-/* --- Spacer override for light sections -------------------- */
-.theme-cream .spacer,
-.theme-paper .spacer {
-  background-color: #ccc8be;
-}
-
 /* --- model-viewer ------------------------------------------ */
 model-viewer {
   width: 100%;
   height: 340px;
   background-color: var(--ts-ink2);
-  border-radius: 8px;
-  border: 1px solid #2a2a40;
+  border-radius: var(--radius);
+  border: 1px solid #2a4a52;
 }
 
 .viewer-card {
@@ -459,7 +620,7 @@ model-viewer {
   width: 100%;
   height: 340px;
   background-color: var(--ts-ink2);
-  border-radius: 8px;
+  border-radius: var(--radius);
   border: 1px dashed #55686e;
   display: flex;
   align-items: center;
@@ -494,31 +655,54 @@ model-viewer {
 }
 
 /* --- BibTeX block ------------------------------------------ */
+.bibtex-block {
+  position: relative;
+}
+.bibtex-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 0.6rem;
+  vertical-align: middle;
+  border-radius: 50%;
+  border: 1px solid #1D90A3;
+  background: transparent;
+  color: #1D90A3;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color var(--ease), color var(--ease);
+}
+.bibtex-copy:hover {
+  background: #1D90A3;
+  color: #ffffff;
+}
 .bibtex-block pre {
   background-color: var(--ts-ink2) !important;
   color: #e0e0f0 !important;
   border-left: 4px solid var(--ts-amber) !important;
-  border-radius: 6px;
+  border-radius: var(--radius);
   padding: 1.2em !important;
 }
 
 /* --- Links on light sections ------------------------------- */
 .theme-cream a,
 .theme-paper a {
-  color: var(--ts-amber2);
+  color: #1D90A3;
 }
 .theme-cream a:hover,
 .theme-paper a:hover {
-  color: var(--ts-amber);
+  color: #146f7e;
   text-decoration: underline;
 }
 
 /* --- Author links on dark hero ----------------------------- */
 .theme-ink .publication-authors {
-  color: #D2C5B2;
+  color: var(--ts-sand);
 }
 .theme-ink .publication-authors a {
-  color: #D2C5B2;
+  color: var(--ts-sand);
 }
 .theme-ink .publication-authors a:hover {
   color: var(--ts-amber);
@@ -531,13 +715,17 @@ model-viewer {
 
 /* 1. Uniform section padding */
 .ts-section {
-  padding: 3rem 1.5rem;
+  padding: 5rem 1.5rem;
 }
 
 /* 2. Title block */
 .ts-title-block {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.2rem;
   text-align: center;
+}
+.ts-title-block .title {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 /* 3. Body text — captions, prose, lists: one unified style */
@@ -550,7 +738,7 @@ model-viewer {
   text-align: left !important;
 }
 .theme-ink .ts-body {
-  color: #ccccdd;
+  color: var(--ts-sand);
 }
 .ts-body p,
 .ts-body li {
@@ -560,9 +748,11 @@ model-viewer {
 /* 4. Image width classes */
 .ts-img-wide   { width: 90%; }
 .ts-img-medium { width: 65%; }
+.ts-img-narrow { width: 55%; }
+.ts-img-wide,
+.ts-img-medium,
 .ts-img-narrow {
-  width: 55%;
-  border-radius: 4px;
+  border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.13);
+  box-shadow: var(--shadow-img);
 }

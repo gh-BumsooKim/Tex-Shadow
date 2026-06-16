@@ -10,7 +10,9 @@
 
   <title>Tex-Shadow</title>
   <link rel="icon" href="data:,">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Google+Sans|Noto+Sans&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
@@ -33,13 +35,13 @@
 <!-- ============================================================
      Navbar
      ============================================================ -->
-<nav id="side-nav" class="on-dark" aria-label="Page sections">
-  <a href="#tldr"       class="side-nav-item" data-label="TL;DR"></a>
+<nav id="side-nav" aria-label="Page sections">
   <a href="#teaser"     class="side-nav-item" data-label="Teaser"></a>
-  <a href="#poster"     class="side-nav-item" data-label="Poster"></a>
+  <a href="#tldr"       class="side-nav-item" data-label="TL;DR"></a>
   <a href="#method"     class="side-nav-item" data-label="Method Overview"></a>
   <a href="#comparison" class="side-nav-item" data-label="Comparison"></a>
   <a href="#results"    class="side-nav-item" data-label="Results"></a>
+  <a href="#poster"     class="side-nav-item" data-label="Poster"></a>
   <a href="#viewer"     class="side-nav-item" data-label="3D Viewer"></a>
   <a href="#bibtex"     class="side-nav-item" data-label="BibTeX"></a>
   <a href="#references" class="side-nav-item" data-label="References"></a>
@@ -145,9 +147,9 @@
           </span>
         </div>
 
-        <div class="is-size-6 publication-authors" style="margin-top:0.5rem; color:#D2C5B2;">
-          <sup>1</sup>Chung-Ang University, Republic of Korea<br>
-          <small style="color:#96aaa6;">
+        <div class="is-size-6 publication-authors" style="margin-top:0.5rem; color:var(--ts-sand);">
+          <sup>1</sup><img src="static/images/cau_logo.png" alt="CAU" style="height:1.15em; vertical-align:-0.2em; margin-right:0.4em; filter:brightness(0) invert(1); opacity:0.9;"><a href="https://neweng.cau.ac.kr/index.do" target="_blank">Chung-Ang University, Republic of Korea</a><br>
+          <small style="color:var(--ts-muted);">
             <sup>†</sup>Derived from his Master's thesis at CAU; now with Smilegate &nbsp;·&nbsp;
             <sup>*</sup>Corresponding Author
           </small>
@@ -159,12 +161,12 @@
                  alt="SIGGRAPH 2026 Los Angeles"
                  style="height:58px; border-radius:6px;">
           </a>
-          <p style="color:#96aaa6; font-size:0.78rem; margin-top:0.4rem; letter-spacing:0.06em; text-transform:uppercase;">Posters Program</p>
+          <p style="color:var(--ts-muted); font-size:0.78rem; margin-top:0.4rem; letter-spacing:0.06em; text-transform:uppercase;">Posters Program</p>
         </div>
 
         <div class="publication-links" style="margin-top:1rem;">
           <span class="link-block">
-            <a href="#" target="_blank" class="external-link button is-normal is-rounded is-outlined ts-btn">
+            <a class="external-link button is-normal is-rounded is-outlined ts-btn is-soon" aria-disabled="true">
               <span class="icon"><i class="fas fa-file-pdf"></i></span>
               <span>Paper (Soon)</span>
             </a>
@@ -182,14 +184,29 @@
             </a>
           </span>
           <span class="link-block">
-            <a class="external-link button is-normal is-rounded is-outlined ts-btn">
+            <a class="external-link button is-normal is-rounded is-outlined ts-btn is-soon" aria-disabled="true">
               <span class="icon"><i class="fas fa-play"></i></span>
               <span>Demo (Soon)</span>
             </a>
           </span>
         </div>
 
-        <p style="color:#96aaa6; font-size:0.85rem; margin-top:0.7rem;">
+        <div class="hero-metrics">
+          <div class="metric">
+            <span class="metric-val">2–3</span>
+            <span class="metric-label">View Inputs</span>
+          </div>
+          <div class="metric">
+            <span class="metric-val">Textured</span>
+            <span class="metric-label">3D Output</span>
+          </div>
+          <div class="metric">
+            <span class="metric-val">Dual-Mode</span>
+            <span class="metric-label">Anamorphic + Shadow</span>
+          </div>
+        </div>
+
+        <p style="color:var(--ts-muted); font-size:0.85rem; margin-top:1.4rem;">
           July 19–23, 2026 &nbsp;·&nbsp; ACM SIGGRAPH 2026 Posters &nbsp;·&nbsp; Los Angeles, CA, USA
         </p>
 
@@ -199,40 +216,9 @@
 </section>
 
 <!-- ============================================================
-     TL;DR  (cream)
+     Teaser Image  (cream)
      ============================================================ -->
-<section class="hero teaser theme-cream">
-  <div class="container is-max-desktop ts-section">
-    <div class="has-text-centered">
-
-      <div class="ts-title-block">
-        <h2 class="title is-3 accent-line" id="tldr">
-          <cite>"Where Shadows Become Sculptures"</cite>
-        </h2>
-      </div>
-
-      <p class="ts-body">
-        <b>tl;dr</b>&nbsp; An optimization-based framework that leverages 3D-aware diffusion
-        priors to automate the generation of high-quality <em>textured</em> 3D shadow art from
-        sparse multi-view inputs — the first method to support both colorful anamorphic
-        exhibitions and light-projected shadow art.
-      </p>
-
-      <div style="margin-top:1.4rem;">
-        <a href="https://neweng.cau.ac.kr/index.do" target="_blank">
-          <img src="static/images/cau_logo.png" style="width:18%; min-width:110px;">
-        </a>
-      </div>
-
-    </div>
-  </div>
-  <div class="spacer"></div>
-</section>
-
-<!-- ============================================================
-     Teaser Image  (paper)
-     ============================================================ -->
-<section class="hero theme-paper">
+<section class="hero theme-cream">
   <div class="container is-max-desktop ts-section">
     <div class="has-text-centered">
 
@@ -258,18 +244,47 @@
 </section>
 
 <!-- ============================================================
-     Poster  (cream)
+     TL;DR  (paper)
      ============================================================ -->
-<section class="hero theme-cream">
+<section class="hero teaser theme-paper">
   <div class="container is-max-desktop ts-section">
     <div class="has-text-centered">
 
       <div class="ts-title-block">
-        <h2 class="title is-3 accent-line" id="poster">Poster</h2>
+        <h2 class="title is-3 accent-line" id="tldr">
+          <cite>"Where Shadows Become Sculptures"</cite>
+        </h2>
       </div>
 
-      <div class="image-container ts-img-narrow">
-        <img src="static/images/siggraph_26_poster.png" alt="SIGGRAPH 2026 Poster">
+      <p class="ts-body">
+        <b>tl;dr</b>&nbsp; An optimization-based framework that leverages 3D-aware diffusion
+        priors to automate the generation of high-quality <em>textured</em> 3D shadow art from
+        sparse multi-view inputs — the first method to support both colorful anamorphic
+        exhibitions and light-projected shadow art.
+      </p>
+
+      <div class="columns is-centered feature-cards">
+        <div class="column">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-cube"></i></div>
+            <h3>3D-Aware Diffusion Prior</h3>
+            <p>Customizes a pre-trained 3D diffusion model via LoRA to handle semantic-free, sparse-view inputs.</p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-palette"></i></div>
+            <h3>Inverse Texture Optimization</h3>
+            <p>Recovers fine-grained color through UV-space differentiable rendering for high-quality textured meshes.</p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="feature-card">
+            <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+            <h3>Dual Exhibition Modes</h3>
+            <p>First to support both colorful anamorphic illusions and light-projected shadow art from a single model.</p>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -278,9 +293,9 @@
 </section>
 
 <!-- ============================================================
-     Method Overview  (paper)
+     Method Overview  (cream)
      ============================================================ -->
-<section class="hero theme-paper">
+<section class="hero theme-cream">
   <div class="container is-max-desktop ts-section">
     <div class="has-text-centered">
 
@@ -322,9 +337,9 @@
 </section>
 
 <!-- ============================================================
-     Comparison  (cream)
+     Comparison  (paper)
      ============================================================ -->
-<section class="hero theme-cream">
+<section class="hero theme-paper">
   <div class="container is-max-desktop ts-section">
     <div class="has-text-centered">
 
@@ -351,9 +366,9 @@
 </section>
 
 <!-- ============================================================
-     Results  (paper)
+     Results  (cream)
      ============================================================ -->
-<section class="hero theme-paper">
+<section class="hero theme-cream">
   <div class="container is-max-desktop ts-section">
     <div class="has-text-centered">
 
@@ -378,6 +393,26 @@
 </section>
 
 <!-- ============================================================
+     Poster  (paper)
+     ============================================================ -->
+<section class="hero theme-paper">
+  <div class="container is-max-desktop ts-section">
+    <div class="has-text-centered">
+
+      <div class="ts-title-block">
+        <h2 class="title is-3 accent-line" id="poster">Poster</h2>
+      </div>
+
+      <div class="image-container ts-img-narrow">
+        <img src="static/images/siggraph_26_poster.png" alt="SIGGRAPH 2026 Poster">
+      </div>
+
+    </div>
+  </div>
+  <div class="spacer"></div>
+</section>
+
+<!-- ============================================================
      Interactive 3D Viewer  (ink — dark)
      ============================================================ -->
 <section class="hero theme-ink">
@@ -388,7 +423,7 @@
         <h2 class="title is-3 accent-line" id="viewer">Interactive 3D Model Viewer</h2>
       </div>
 
-      <p class="ts-body" style="text-align:center !important; color:#96aaa6;">
+      <p class="ts-body" style="text-align:center !important; color:var(--ts-muted);">
         Interactive 3D assets will be available upon paper release.
       </p>
 
@@ -440,14 +475,14 @@
 </section>
 
 <!-- ============================================================
-     BibTeX  (ink — dark)
+     BibTeX  (cream)
      ============================================================ -->
-<section class="hero theme-ink">
+<section class="hero theme-cream">
   <div class="container is-max-desktop ts-section">
     <div class="has-text-centered">
 
       <div class="ts-title-block">
-        <h2 class="title is-3 accent-line" id="bibtex">BibTeX</h2>
+        <h2 class="title is-3" id="bibtex"><span class="accent-line">BibTeX</span><button class="bibtex-copy" type="button" aria-label="Copy BibTeX to clipboard"><i class="far fa-copy"></i></button></h2>
       </div>
 
       <div class="ts-body bibtex-block">
@@ -467,14 +502,14 @@
 </section>
 
 <!-- ============================================================
-     References  (cream)
+     References  (paper)
      ============================================================ -->
-<section class="hero theme-cream">
+<section class="hero theme-paper">
   <div class="container is-max-desktop ts-section">
     <div class="has-text-centered">
 
       <div class="ts-title-block">
-        <h2 class="title is-3 accent-line" id="references">Reference</h2>
+        <h2 class="title is-3 accent-line" id="references">References</h2>
       </div>
 
       <div class="ts-body content">
@@ -504,12 +539,19 @@
 <!-- ============================================================
      Footer
      ============================================================ -->
-<footer class="footer" style="background-color:#2A4249;">
+<footer class="footer" style="background-color:var(--ts-ink);">
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-8">
         <div class="content has-text-centered">
-          <p style="color:#96aaa6; font-size:0.85rem;">
+          <p style="color:#E6E2D5; font-size:1.05rem; font-weight:600; line-height:1.4;">
+            Tex-Shadow: Synthesizing Textured 3D Shadow Art via 3D-Aware Diffusion Prior
+          </p>
+          <p style="color:var(--ts-muted); font-size:0.9rem; margin-top:0.35rem;">
+            Bumsoo Kim, Sanghyun Seo &nbsp;·&nbsp; ACM SIGGRAPH 2026 Posters
+          </p>
+          <hr style="border:none; border-top:1px solid rgba(150,170,166,0.22); width:60%; margin:1.4rem auto;">
+          <p style="color:var(--ts-muted); font-size:0.85rem;">
             This page was built using the
             <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" style="color:#E6E2D5;">Academic Project Page Template</a>
             adopted from the

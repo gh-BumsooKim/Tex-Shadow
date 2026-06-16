@@ -1,5 +1,8 @@
 window.HELP_IMPROVE_VIDEOJS = false;
 
+// mark that JS is on, so reveal targets start hidden (CSS gated on .js)
+document.documentElement.classList.add('js');
+
 
 $(document).ready(function() {
     // Check for click events on the navbar burger icon
@@ -17,6 +20,38 @@ $(document).ready(function() {
     var carousels = bulmaCarousel.attach('.carousel', options);
 	
     bulmaSlider.attach();
+
+    // BibTeX copy button
+    var copyBtn = document.querySelector('.bibtex-copy');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', function () {
+            var code = document.querySelector('.bibtex-block code');
+            var text = code ? code.innerText : '';
+            navigator.clipboard.writeText(text).then(function () {
+                copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(function () {
+                    copyBtn.innerHTML = '<i class="far fa-copy"></i>';
+                }, 1600);
+            });
+        });
+    }
+
+    // Scroll reveal: content sections fade/slide in as they enter the viewport
+    var revealEls = document.querySelectorAll('.ts-section .has-text-centered');
+    if (revealEls.length && 'IntersectionObserver' in window) {
+        var revealObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+        revealEls.forEach(function (el) { revealObserver.observe(el); });
+    } else {
+        // no IntersectionObserver → show everything
+        revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+    }
 
     // Side nav: scroll-based active / dark detection
     var sideItems = document.querySelectorAll('.side-nav-item');
@@ -48,7 +83,6 @@ $(document).ready(function() {
             if (current) {
                 sideItems.forEach(function (el) { el.classList.remove('is-active'); });
                 current.item.classList.add('is-active');
-                sideNav.classList.toggle('on-dark', current.section.classList.contains('theme-ink'));
             }
         }
 
