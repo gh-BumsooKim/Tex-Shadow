@@ -510,6 +510,56 @@ a.mega-paper:hover { background: var(--ts-sand) !important; }
   opacity: 0.5;
 }
 
+/* --- Hero news (add <li> items on top of .news-list) ------- */
+.hero-news {
+  margin-top: 1.4rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+.news-badge {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 0.7rem;
+  background: #1D90A3;
+  color: #ffffff;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 700;
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+.news-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.news-list li {
+  display: flex;
+  gap: 0.75rem;
+  padding: 6px 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--ts-sand);
+}
+.news-list li + li {
+  border-top: 1px solid rgba(150, 170, 166, 0.15);
+}
+.news-date {
+  flex-shrink: 0;
+  min-width: 6.5rem;
+  color: #5bc4d6;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+.news-text a {
+  color: #5bc4d6;
+  text-decoration: underline;
+}
+
 /* --- Hero metric badges ------------------------------------ */
 .hero-metrics {
   display: flex;
